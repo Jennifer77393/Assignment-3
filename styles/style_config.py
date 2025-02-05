@@ -5,6 +5,6 @@ BUTTON_STYLE = {
 
 CANVAS_STYLE = {
     'background': 'grey',
-    'width': 600,
-    'height': 600
+    'width': 800,
+    'height': 450
 }
