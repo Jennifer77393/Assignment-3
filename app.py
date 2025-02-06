@@ -1,8 +1,8 @@
 import tkinter as tk
 from tkinter import ttk, filedialog, messagebox
 from components.image_loader import ImageLoader
-from components.image_resizer import ImageResizer
-from components.image_cropper import ImageCropper
+from components.image_resizer import ImageR
+from components.image_cropper import ImageC
 from components.canvas_renderer import CanvasRenderer
 from components.image_rotator import ImageRotator
 from styles.style_config import BUTTON_STYLE, CANVAS_STYLE
