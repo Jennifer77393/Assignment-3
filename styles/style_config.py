@@ -1,6 +1,6 @@
 BUTTON_STYLE = {
     'width': 20,
-    'padding': 10
+    'padding': 10,
 }
 
 CANVAS_STYLE = {

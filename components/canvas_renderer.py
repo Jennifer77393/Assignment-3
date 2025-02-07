@@ -1,6 +1,8 @@
 import tkinter as tk
 from PIL import Image, ImageTk
-from tkinter import ttk, filedialog, messagebox
+
+
+# from tkinter import ttk, filedialog, messagebox  # No need to import these here
 
 class CanvasRenderer:
     def display_image(self, canvas, image):
@@ -8,34 +10,32 @@ class CanvasRenderer:
         pil_image = Image.fromarray(image)
         tk_image = ImageTk.PhotoImage(pil_image)
 
-        canvas.delete("all")
+        canvas.delete("all")  # Clear previous image
         canvas.create_image(0, 0, anchor=tk.NW, image=tk_image)
         canvas.image = tk_image  # Keep reference to avoid garbage collection
 
-    def display_cropped_image(self, frame, image, is_cropped_frame_hidden):
-        """Display the image on the canvas."""
-        print(frame.winfo_width(), frame.winfo_height())
-
-        # Check if the canvas exists, and if the cropped frame is hidden
-        if is_cropped_frame_hidden:
-            frame.grid(row=1, column=1, columnspan=6, sticky="nsew")
-        if not hasattr(self, 'cropped_canvas'):
-            # Show the frame if hidden
-            frame.grid(row=1, column=1, columnspan=6, sticky="nsew")
-
-            # Create the canvas if it doesn't exist
-            self.cropped_canvas = tk.Canvas(frame, bg="gray", width=1500, height=800)
+    def display_cropped_image(self, frame, image):
+        """Display the cropped image."""
+        # Check if cropped_canvas exists, create it if not.
+        if not hasattr(self, 'cropped_canvas') or self.cropped_canvas is None:  # Check if it exists or not.
+            frame.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
+            self.cropped_canvas = tk.Canvas(frame, bg="gray")  # Removed fixed width and height
             self.cropped_canvas.pack(fill=tk.BOTH, expand=True)
+            self.cropped_canvas.image = None  # Initialize image to None.
 
-        # Update the canvas with the new image
-        frame.update_idletasks()
-
-        # Convert the image to PIL format and then to Tkinter format
         pil_image = Image.fromarray(image)
         tk_image = ImageTk.PhotoImage(pil_image)
 
-        # Clear any previous image and set the new one
-        self.cropped_canvas.delete("all")
+        self.cropped_canvas.delete("all")  # Clear previous image
         self.cropped_canvas.create_image(0, 0, anchor=tk.NW, image=tk_image)
-        self.cropped_canvas.image = tk_image  # Keep reference to avoid garbage collection
+        self.cropped_canvas.image = tk_image  # Keep reference
 
+    def clear_canvas(self, canvas):
+        canvas.delete("all")
+
+    def clear_cropped_canvas(self, frame):
+        # More robust way to clear the cropped image.
+        for widget in frame.winfo_children():
+            widget.destroy()
+        self.cropped_canvas = None  # Reset the cropped canvas attribute
+        # frame.pack_forget()  # Remove the frame itself (if needed)

@@ -6,21 +6,26 @@ class ImageCropper:
         self.canvas = None
 
     def start_crop(self, event, canvas):
-        """Start the cropping process by capturing the initial coordinates."""
+        """Start the cropping process."""
+        self.canvas = canvas
         self.start_x = event.x
         self.start_y = event.y
+
         if self.rect_id is not None:
-            canvas.delete(self.rect_id)
+            self.canvas.delete(self.rect_id)
+
         self.rect_id = canvas.create_rectangle(self.start_x, self.start_y, event.x, event.y, outline="red", width=2)
 
     def update_crop(self, event, canvas):
-        """Update the cropping rectangle while the mouse is being dragged."""
-        if self.rect_id is not None:
+        """Update the cropping rectangle."""
+        if self.rect_id is not None:  # Check if a rectangle exists
             canvas.coords(self.rect_id, self.start_x, self.start_y, event.x, event.y)
 
-
     def perform_crop(self, event, canvas, original_image, thumbnail):
-        """Perform the cropping once the mouse button is released."""
+        """Perform the cropping."""
+        if self.rect_id is None: #Check if rect_id is created or not, if not then return.
+            return None
+
         x1, y1, x2, y2 = canvas.coords(self.rect_id)
         x1, x2 = sorted((int(x1), int(x2)))
         y1, y2 = sorted((int(y1), int(y2)))
